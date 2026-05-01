@@ -17,6 +17,7 @@ export function SignupForm() {
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ email, password, confirm_password: confirm }),
     });
     const data = (await res.json()) as { error?: string };

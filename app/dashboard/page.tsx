@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { DASHBOARD_COURSE_COPY } from "@/lib/course-meta";
 import { getPurchases } from "@/lib/purchases";
@@ -8,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) {
-    return null;
+    redirect("/login?next=/dashboard");
   }
   const purchasedCourses = await getPurchases(session.id);
 
