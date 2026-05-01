@@ -1,0 +1,698 @@
+@layer components {
+.progress-button {
+  display: block;
+  width: 80%;
+  padding: 2rem;
+  margin: 5rem auto;
+  font-size: 2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+.course-interface-section {
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+.course-interface-section h1 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  font-size: 3.2em;
+  font-weight: 700;
+  text-align: center;
+}
+.course-interface-section h2 {
+  color: #34495e;
+  margin-bottom: 40px;
+  font-size: 2.2em;
+  font-weight: 600;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 15px;
+  text-align: center;
+}
+.timeline-steps {
+  list-style: none;
+  padding: 0;
+  position: relative;
+  margin-top: 50px;
+}
+.timeline-steps::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #007bff;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+.timeline-item {
+  margin-bottom: 40px;
+  position: relative;
+  width: 100%;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: #007bff;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+}
+.timeline-content {
+  display: block;
+  background-color: #f0f8ff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  color: #333;
+  font-size: 1.15em;
+  transition: all 0.3s ease;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+}
+.timeline-item:nth-child(even) .timeline-content {
+  margin-left: calc(50% + 20px);
+  margin-right: auto;
+}
+.timeline-item:nth-child(odd) .timeline-content {
+  margin-right: calc(50% + 20px);
+  margin-left: auto;
+}
+.timeline-content:hover {
+  background-color: #e6f2ff;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+.timeline-content strong {
+  color: #007bff;
+  font-size: 1.2em;
+}
+
+/* Locked steps: not clickable, muted (light + dark below) */
+.timeline-content--locked {
+  cursor: not-allowed;
+  user-select: none;
+  background-color: #e9ecef;
+  color: #6c757d;
+  opacity: 0.95;
+  filter: grayscale(0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+.timeline-content--locked strong {
+  color: #5a6d7e;
+}
+.timeline-content--locked:hover {
+  background-color: #e1e5e9;
+  transform: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.timeline-item:has(.timeline-content--locked)::before {
+  background-color: #94a3b8;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.35);
+}
+@media (max-width: 768px) {
+  .timeline-steps::before {
+    left: 20px;
+    transform: translateX(0);
+  }
+  .timeline-item::before {
+    left: 20px;
+    transform: translate(-50%, -50%);
+  }
+  .timeline-content {
+    width: calc(100% - 60px);
+    margin-left: 60px !important;
+    margin-right: 0 !important;
+    text-align: left !important;
+  }
+}
+body.dark-mode .course-interface-section {
+  background-color: #2d2d2d;
+}
+body.dark-mode .course-interface-section h1 {
+  color: #e0e0e0;
+}
+body.dark-mode .course-interface-section h2 {
+  color: #e8e8e8;
+  border-bottom-color: #404040;
+}
+body.dark-mode .timeline-steps::before {
+  background-color: #4da3ff;
+}
+body.dark-mode .timeline-item::before {
+  background-color: #4da3ff;
+  border-color: #2d2d2d;
+  box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.35);
+}
+body.dark-mode .timeline-content {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+}
+body.dark-mode .timeline-content:hover {
+  background-color: #454545;
+}
+body.dark-mode .timeline-content strong {
+  color: #6cb2ff;
+}
+
+body.dark-mode .timeline-content.timeline-content--locked {
+  background-color: #252525;
+  color: #7c7c7c;
+  border: 1px dashed #4a4a4a;
+  opacity: 0.72;
+  filter: grayscale(0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+body.dark-mode .timeline-content.timeline-content--locked strong {
+  color: #6a7580;
+}
+body.dark-mode .timeline-content.timeline-content--locked:hover {
+  background-color: #252525;
+  transform: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Mute timeline nodes for locked rows */
+body.dark-mode .timeline-item:has(.timeline-content--locked)::before {
+  background-color: #4a4d52;
+  box-shadow: 0 0 0 3px rgba(120, 120, 120, 0.25);
+}
+
+/* Course step pages: scoped with .course-step-page (login/signup use .step-container only). */
+
+.course-step-page.step-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: clamp(1.75rem, 1.2rem + 2.2vw, 3.5rem) clamp(1.1rem, 0.75rem + 1.8vw, 2.5rem)
+    clamp(2.25rem, 1.65rem + 2vw, 3.5rem);
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  container-type: inline-size;
+  container-name: course-step;
+}
+
+.course-step-page > .course-name,
+.course-step-page .course-step-video-step > .course-name {
+  text-align: center;
+  font-size: clamp(0.92rem, 0.8rem + 0.95cqi, 1.35rem);
+  font-weight: 600;
+  color: #5a6c7d;
+  margin: 0 0 0.35rem;
+}
+
+.course-step-page > h1.step-title,
+.course-step-page .course-step-video-step > h1.step-title {
+  text-align: center;
+  font-size: clamp(1.45rem, 0.88rem + 2.85cqi, 2.85rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 clamp(1rem, 0.55rem + 2cqi, 1.85rem);
+  line-height: 1.2;
+}
+
+.course-step-page .step-video-frame {
+  margin: 0 auto clamp(1.25rem, 0.65rem + 2cqi, 2rem);
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.course-step-page .step-video-inner {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.course-step-page .instructions {
+  max-width: min(52rem, 100%);
+  margin: 0 auto 0.5rem;
+  text-align: left;
+}
+
+.course-step-page .instructions h2 {
+  font-size: clamp(1.06rem, 0.88rem + 1.25cqi, 1.65rem);
+  font-weight: 700;
+  margin: 0 0 clamp(0.75rem, 0.5rem + 0.85cqi, 1.1rem);
+  color: #1a1a1a;
+}
+
+.course-step-page .instructions > p {
+  margin: 0 0 clamp(1rem, 0.85rem + 0.65cqi, 1.35rem);
+  line-height: 1.65;
+  color: #444;
+  font-size: clamp(0.94rem, 0.78rem + 1cqi, 1.38rem);
+}
+
+.course-step-page .instructions > p strong {
+  color: #1a1a1a;
+}
+
+.course-step-page .category-examples {
+  background-color: #f8f9fa;
+  border-left: 4px solid #3498db;
+  padding: clamp(0.85rem, 0.55rem + 1.25cqi, 1.15rem) clamp(1rem, 0.75rem + 1.35cqi, 1.35rem);
+  margin: clamp(1rem, 0.65rem + 1.75cqi, 1.35rem) 0;
+  border-radius: 4px;
+}
+
+.course-step-page .category-examples h3 {
+  margin: 0 0 clamp(0.65rem, 0.45rem + 0.85cqi, 0.85rem);
+  color: #2c3e50;
+  font-size: clamp(1.02rem, 0.88rem + 1cqi, 1.25rem);
+  font-weight: 700;
+}
+
+.course-step-page .category-examples .step-instruction-list {
+  margin-bottom: 0;
+}
+
+.course-step-page .instructions .step-instructions-closing {
+  margin: clamp(1rem, 0.75rem + 1cqi, 1.35rem) 0 0;
+  line-height: 1.65;
+  color: #444;
+  font-size: clamp(0.94rem, 0.78rem + 1cqi, 1.38rem);
+}
+
+.course-step-page .instructions-congrats-outro {
+  text-align: center;
+  font-size: clamp(1.02rem, 0.88rem + 0.95cqi, 1.52rem);
+  font-weight: 600;
+  color: #2c3e50;
+  margin: clamp(1.35rem, 1rem + 1.5cqi, 2rem) 0 0;
+  line-height: 1.5;
+}
+
+.course-step-page .step-hero-image-wrap {
+  margin: 0 auto clamp(1.25rem, 0.65rem + 2cqi, 2rem);
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.course-step-page .step-hero-image-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Inline step hero images (Flask: .image-container { width 100%; img width 100% }) */
+.course-step-page .image-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto clamp(1.15rem, 0.6rem + 1.85cqi, 1.85rem);
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.course-step-page .image-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+
+.course-step-page .step-instruction-list {
+  margin: 0 0 clamp(1.1rem, 0.85rem + 1cqi, 1.5rem);
+  padding-left: clamp(1.1rem, 0.85rem + 1.1cqi, 1.45rem);
+  color: #444;
+  line-height: 1.65;
+  list-style-type: disc;
+  font-size: clamp(0.94rem, 0.78rem + 1cqi, 1.38rem);
+}
+
+.course-step-page .step-instruction-list li {
+  margin-bottom: clamp(0.45rem, 0.3rem + 0.65cqi, 0.7rem);
+}
+
+.course-step-page .step-instruction-list li::marker {
+  color: #1a1a1a;
+}
+
+.course-step-page .step-download-block {
+  text-align: center;
+  margin: 2rem 0 0;
+}
+
+.course-step-page .course-step-centered-download {
+  text-align: center;
+  margin: clamp(1.25rem, 0.85rem + 1.75cqi, 1.95rem) 0;
+}
+
+.course-step-page .course-step-subheading {
+  color: #2c3e50;
+  font-size: clamp(1.02rem, 0.88rem + 1cqi, 1.38rem);
+  font-weight: 700;
+  margin: 0 0 clamp(0.65rem, 0.45rem + 0.85cqi, 1rem);
+}
+
+.course-step-page .step-download-label {
+  font-size: clamp(0.98rem, 0.86rem + 0.85cqi, 1.18rem);
+  font-weight: 700;
+  margin: 0 0 clamp(0.75rem, 0.55rem + 0.85cqi, 1.05rem);
+  color: #2c3e50;
+}
+
+.course-step-page .btn-download-pdf {
+  display: inline-block;
+  background-color: #3498db;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: clamp(0.92rem, 0.84rem + 0.55cqi, 1.06rem);
+  padding: clamp(0.65rem, 0.45rem + 0.85cqi, 0.95rem) clamp(1rem, 0.75rem + 1.1cqi, 1.6rem);
+  border-radius: 8px;
+  text-decoration: none;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.course-step-page .btn-download-pdf:hover {
+  background-color: #2980b9;
+  color: #fff !important;
+}
+
+.course-step-page .step-next-footer {
+  text-align: center;
+  margin-top: clamp(1.35rem, 0.85rem + 2cqi, 2.25rem);
+}
+
+.course-step-page .step-next-footer > p {
+  max-width: min(52rem, 100%);
+  margin: 0 auto clamp(1rem, 0.75rem + 1cqi, 1.4rem);
+  line-height: 1.65;
+  color: #555;
+  text-align: center;
+  font-size: clamp(0.94rem, 0.78rem + 0.95cqi, 1.2rem);
+}
+
+.course-step-page .step-next-primary-btn {
+  font-size: clamp(0.98rem, 0.86rem + 0.75cqi, 1.15rem);
+  font-weight: 700;
+  padding: clamp(0.65rem, 0.45rem + 0.95cqi, 0.9rem) clamp(1.25rem, 0.85rem + 2cqi, 2.15rem);
+  border-radius: 8px;
+}
+
+/* Step 9 — Flask inline styles on Complete Course */
+.course-step-page .step-congrats-complete-btn.step-next-primary-btn {
+  font-size: 1.2em;
+  padding: 15px 30px;
+}
+
+.course-step-page a.btn-primary:not(.step-next-primary-btn) {
+  font-size: clamp(0.95rem, 0.84rem + 0.65cqi, 1.08rem);
+  padding: clamp(0.55rem, 0.4rem + 0.75cqi, 0.8rem) clamp(1rem, 0.7rem + 1.35cqi, 1.65rem);
+}
+
+/* Step 3 / 6 — collapsible question grid */
+.course-step-page .video-questions-disclosure {
+  margin: clamp(1.35rem, 0.85rem + 2cqi, 2.25rem) auto 0;
+  max-width: 100%;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #2563eb;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+}
+
+.course-step-page .video-questions-disclosure__summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(0.65rem, 0.45rem + 0.85cqi, 0.95rem) clamp(0.85rem, 0.55rem + 1.1cqi, 1.2rem);
+  background: #3b82f6;
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(0.94rem, 0.82rem + 0.75cqi, 1.12rem);
+}
+
+.course-step-page .video-questions-disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+
+.course-step-page .video-questions-disclosure__chevron {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-135deg);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.course-step-page .video-questions-disclosure[open] .video-questions-disclosure__chevron {
+  transform: rotate(45deg);
+}
+
+.course-step-page .video-questions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.55rem, 0.35rem + 0.75cqi, 0.85rem);
+  padding: clamp(0.75rem, 0.5rem + 1cqi, 1.15rem);
+  background: #f4f4f5;
+}
+
+.course-step-page .video-q-grid-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.55rem, 0.4rem + 0.65cqi, 0.95rem) clamp(0.5rem, 0.35rem + 0.65cqi, 0.85rem);
+  border-radius: 8px;
+  background: #fafafa;
+  border: 1px solid #e8e8ec;
+  color: #2c3e50 !important;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: clamp(0.86rem, 0.76rem + 0.65cqi, 1.05rem);
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.course-step-page .video-q-grid-btn:hover {
+  background: #f0f0f2;
+  border-color: #dcdce0;
+  color: #1a1a1a !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 600px) {
+  .course-step-page .video-questions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Dark mode — match reference: charcoal card, white / light gray text */
+body.dark-mode .course-step-page.step-container {
+  background-color: #222222;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .course-step-page > .course-name,
+body.dark-mode .course-step-page .course-step-video-step > .course-name {
+  color: #b8b8b8;
+}
+
+body.dark-mode .course-step-page > h1.step-title,
+body.dark-mode .course-step-page .course-step-video-step > h1.step-title {
+  color: #ffffff;
+}
+
+body.dark-mode .course-step-page .instructions h2 {
+  color: #ffffff;
+}
+
+body.dark-mode .course-step-page .instructions > p,
+body.dark-mode .course-step-page .instructions .step-instructions-closing,
+body.dark-mode .course-step-page .step-instruction-list {
+  color: #cccccc;
+}
+
+body.dark-mode .course-step-page .instructions > p strong,
+body.dark-mode .course-step-page .step-instruction-list strong {
+  color: #f3f4f6;
+}
+
+body.dark-mode .course-step-page .category-examples {
+  background-color: #2a2a2e;
+  border-left-color: #60a5fa;
+}
+
+body.dark-mode .course-step-page .category-examples h3 {
+  color: #e8e8e8;
+}
+
+body.dark-mode .course-step-page .step-instruction-list li::marker {
+  color: #ffffff;
+}
+
+body.dark-mode .course-step-page .step-download-label {
+  color: #e8e8e8;
+}
+
+body.dark-mode .course-step-page .course-step-subheading {
+  color: #e0e0e0;
+}
+
+body.dark-mode .course-step-page .step-next-footer > p {
+  color: #cccccc;
+}
+
+body.dark-mode .course-step-page .instructions-congrats-outro {
+  color: #e8e8e8;
+}
+
+body.dark-mode .course-step-page .video-questions-disclosure {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.25);
+}
+
+body.dark-mode .course-step-page .video-questions-grid {
+  background: #18181b;
+}
+
+body.dark-mode .course-step-page .video-q-grid-btn {
+  background: #3f3f46;
+  border: 1px solid #52525b;
+  color: #f4f4f5 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .course-step-page .video-q-grid-btn:hover {
+  background: #52525b;
+  border-color: #71717a;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .course-step-page .step-video-frame {
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .course-step-page .step-hero-image-wrap {
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.5);
+}
+
+/* Per-question HLS pages: full-width band + wide card (avoid global .video-container from marketing.css). */
+.course-video-question-main {
+  flex: 1 0 auto;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0 1.25rem 2.5rem;
+}
+
+.video-page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2.5rem auto 0;
+  padding: clamp(1.25rem, 0.85rem + 1.6vw, 2rem) clamp(1.1rem, 0.7rem + 1.85vw, 2rem);
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  container-type: inline-size;
+  container-name: video-question;
+}
+
+.video-page-header {
+  text-align: center;
+  margin-bottom: clamp(1rem, 0.65rem + 1.5cqi, 1.65rem);
+}
+
+.video-page-course-name {
+  margin: 0 0 0.35rem;
+  color: #888;
+  font-size: clamp(0.9rem, 0.78rem + 0.85cqi, 1.15rem);
+}
+
+.video-page-title {
+  margin: 0 0 0.35rem;
+  color: #2c3e50;
+  font-size: clamp(1.35rem, 0.82rem + 2.65cqi, 2.35rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.video-page-test-label {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: clamp(0.92rem, 0.8rem + 0.75cqi, 1.12rem);
+}
+
+.video-page-player {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  background: #000;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.video-page-actions {
+  text-align: center;
+  margin-top: clamp(1.1rem, 0.75rem + 1.5cqi, 1.65rem);
+}
+
+.video-page-actions .btn-primary {
+  font-size: clamp(0.96rem, 0.84rem + 0.7cqi, 1.12rem);
+  padding: clamp(0.55rem, 0.4rem + 0.8cqi, 0.85rem) clamp(1.05rem, 0.72rem + 1.6cqi, 2rem);
+}
+
+/* Beat Tailwind preflight `video { max-width: 100%; height: auto }` inside the 16:9 frame. */
+.course-signed-hls-video {
+  display: block;
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+}
+
+body.dark-mode .video-page-container {
+  background: #2d2d2d;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .video-page-title {
+  color: #e8e8e8;
+}
+
+body.dark-mode .video-page-course-name {
+  color: #b0b0b0;
+}
+
+body.dark-mode .video-page-test-label {
+  color: #9ca3af;
+}
+
+}

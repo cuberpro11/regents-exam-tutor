@@ -1,0 +1,380 @@
+/* Home / marketing layout (from legacy index.html inline styles) */
+body {
+  font-family: "Lato", sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 60px 0;
+}
+
+.grid-item {
+  border: 1px solid #e0e0e0;
+  padding: 40px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1.5rem;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconBounce 2s ease-in-out infinite;
+}
+
+.feature-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes iconBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.grid-item:hover .feature-icon {
+  animation: iconPulse 0.6s ease-in-out;
+}
+
+@keyframes iconPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  background: #000;
+  border-radius: 8px;
+}
+
+.video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  padding: 80px 0;
+  gap: 40px;
+  flex-wrap: nowrap;
+}
+
+.flex-item-text {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.flex-item-image {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .flex-container {
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 48px 0;
+  }
+
+  .flex-item-text,
+  .flex-item-image {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.resizable-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.flex-container .resizable-image {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.grid-images-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 60px 0;
+  margin-top: 100px;
+}
+
+.grid-images-container .resizable-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+}
+
+.text-above-image {
+  flex-direction: column !important;
+  text-align: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* What Students Are Saying — 2×2 grid on larger screens */
+.testimonials-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 auto 2rem;
+  max-width: 1200px;
+  padding: 0 20px;
+  color: #333;
+}
+
+.testimonials-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: stretch;
+  width: 100%;
+}
+
+.testimonial-video-container {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  background: #000;
+  border-radius: 8px;
+}
+
+.testimonial-video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.testimonials-container .testimonial-card {
+  flex: unset;
+  min-width: 0;
+  max-width: none;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #f4f4f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-profile {
+  flex-shrink: 0;
+}
+
+.testimonial-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.testimonial-quote {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+  color: #333;
+}
+
+.testimonial-subtitle {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .testimonials-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+body.dark-mode .testimonials-title {
+  color: #e0e0e0;
+}
+
+body.dark-mode .testimonials-container .testimonial-card {
+  background-color: #2d2d2d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .testimonial-quote {
+  color: #e0e0e0;
+}
+
+body.dark-mode .testimonial-subtitle {
+  color: #b0b0b0;
+}
+
+body.dark-mode .testimonial-name {
+  color: #e0e0e0;
+}
+
+.hero-video-section {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  min-height: 400px;
+  max-height: 500px;
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 0;
+}
+
+.hero-video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-video-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 80px;
+  z-index: 10;
+}
+
+.hero-video-overlay-button {
+  background-color: #0056b3;
+  color: #fff;
+  padding: 15px 40px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 50px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4);
+  border: none;
+  cursor: pointer;
+}
+
+.hero-video-overlay-button:hover {
+  background-color: #004494;
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 86, 179, 0.6);
+}
+
+@media (max-width: 768px) {
+  .hero-video-section {
+    height: 40vh;
+    min-height: 300px;
+  }
+  .hero-video-overlay {
+    padding-bottom: 50px;
+  }
+  .hero-video-overlay-button {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+  }
+}
+
+body.dark-mode .grid-item {
+  border-color: #404040;
+  background-color: #2d2d2d;
+}
+
+body.dark-mode .feature-icon {
+  color: #4da3ff;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+.fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-in-delay-1 {
+  transition-delay: 0.1s;
+}
+.fade-in-delay-2 {
+  transition-delay: 0.2s;
+}
+.fade-in-delay-3 {
+  transition-delay: 0.3s;
+}
+.fade-in-delay-4 {
+  transition-delay: 0.4s;
+}

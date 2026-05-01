@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local auth / purchases (dev)
+data/users.json
+data/purchases.local.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

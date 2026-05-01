@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Regents Exam Tutor (Next.js)
 
-## Getting Started
+Next.js 16 app: marketing site, course player, **Stripe Checkout**, Bunny.net signed HLS, and account system with **bcrypt** passwords and **Netlify Blobs** storage in production.
 
-First, run the development server:
+## Local setup
+
+```bash
+cd regents-exam-tutor-next
+npm install
+```
+
+Optional: copy sample users so you have a writable `data/users.json`:
+
+```bash
+cp data/users.sample.json data/users.json
+```
+
+Create `.env.local` from `.env.example`:
+
+| Variable | Purpose |
+|----------|---------|
+| `SESSION_SECRET` | **Required in production** (min 16 characters). JWT signing for the httpOnly session cookie. In local dev, a built-in fallback is used if unset. |
+| `STRIPE_SECRET_KEY` | Stripe secret key. |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Optional; not required for redirect Checkout. |
+| `STRIPE_PRICE_ID_ALGEBRA` | Price ID for **Algebra 1 Regents**. |
+| `STRIPE_PRICE_ID_GEOMETRY` | Price ID for **Geometry Regents**. |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret for `POST /api/webhooks/stripe`. |
+| `BUNNY_SECURITY_KEY` | Bunny token signing key (same as legacy Flask `BUNNY_SECURITY_KEY`). |
+| `URL` or `NEXT_PUBLIC_SITE_URL` | Canonical site origin (e.g. `https://your-site.netlify.app`) for Stripe success/cancel URLs. |
+
+### Test login (local)
+
+From `data/users.sample.json` (password is bcrypt for the string `test`):
+
+- **Email:** `test@example.com`  
+- **Password:** `test`
+
+If `data/users.json` exists, that file is used instead of the sample.
+
+### Data storage
+
+| Environment | Users | Purchases |
+|-------------|-------|-----------|
+| Local dev | `data/users.json` (or read-only sample) | `data/purchases.local.json` (gitignored) |
+| Netlify (`NETLIFY=true`) | **Netlify Blobs** store `regents-users` | **Netlify Blobs** store `regents-purchases` |
+
+Sign up is **enabled** on Netlify; new accounts are written to the users blob store. Set a strong `SESSION_SECRET` in the Netlify UI.
+
+Passwords are stored as **bcrypt** hashes. Plaintext passwords in an old `users.json` still work once and are **re-hashed** on that login.
+
+### Stripe webhook
+
+1. Endpoint: `https://<your-domain>/api/webhooks/stripe` — event **`checkout.session.completed`**.  
+2. Users must be **logged in** before checkout so `metadata.userId` is set; the webhook grants the course via `addPurchaseIfNew`.
+
+## Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 (set `URL=http://localhost:3000` in `.env.local` for Stripe return URLs).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build && npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Use a real `SESSION_SECRET` when testing production mode (`next start`).
 
-## Learn More
+## Netlify
 
-To learn more about Next.js, take a look at the following resources:
+- Config: [`netlify.toml`](netlify.toml) with `@netlify/plugin-nextjs`.
+- Set **all** env vars above in the site settings, especially **`SESSION_SECRET`** and **`NETLIFY`** (Netlify usually sets `NETLIFY` automatically; if not, add `NETLIFY=true`).
+- Connect the Stripe webhook to the production URL.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Regenerate `data/videos.json`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+From the legacy SQLite DB (requires `sqlite3` CLI):
 
-## Deploy on Vercel
+```bash
+sqlite3 /path/to/regents_prep_course/database.db ".mode json" ".output data/videos.json" \
+  "SELECT course_name, test_number as test_number, question_number as question_number, video_id, video_title, video_url FROM videos ORDER BY course_name, test_number, question_number;"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ensure the output is one valid JSON array if your tooling emits line-delimited JSON.
