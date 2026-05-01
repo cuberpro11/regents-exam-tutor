@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSessionToken } from "@/lib/auth";
-import { getSessionSecretKey, sessionCookieOptions } from "@/lib/auth-secret";
+import { sessionCookieOptions } from "@/lib/auth-secret";
+import { sessionSecretMisconfigurationMessage } from "@/lib/session-secret-check";
 import { SESSION_COOKIE } from "@/lib/constants";
 import { appendUser, findUserByEmail, newUserId } from "@/lib/users";
 import { hashPassword } from "@/lib/password";
@@ -8,13 +9,9 @@ import { hashPassword } from "@/lib/password";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  try {
-    getSessionSecretKey();
-  } catch {
-    return NextResponse.json(
-      { error: "Server misconfiguration: SESSION_SECRET is not set" },
-      { status: 500 },
-    );
+  const secretErr = sessionSecretMisconfigurationMessage();
+  if (secretErr) {
+    return NextResponse.json({ error: `Server misconfiguration: ${secretErr}` }, { status: 500 });
   }
 
   try {
@@ -50,10 +47,16 @@ export async function POST(request: Request) {
     res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions);
     return res;
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "";
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[signup]", e);
     if (msg.includes("already registered")) {
       return NextResponse.json({ error: "Email already registered" }, { status: 400 });
     }
-    return NextResponse.json({ error: "Signup failed" }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: `Signup could not complete: ${msg}`,
+      },
+      { status: 500 },
+    );
   }
 }

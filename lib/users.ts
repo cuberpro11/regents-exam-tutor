@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import fs from "fs/promises";
 import path from "path";
 import { getStore } from "@netlify/blobs";
+import { useNetlifyBlobs } from "@/lib/use-netlify-blobs";
 
 export type UserRecord = {
   id: string;
@@ -12,10 +13,6 @@ export type UserRecord = {
 
 const BLOB_STORE = "regents-users";
 const BLOB_KEY = "all";
-
-function useNetlifyBlobs(): boolean {
-  return process.env.NETLIFY === "true";
-}
 
 async function readLocalUsersFile(): Promise<{
   users: UserRecord[];

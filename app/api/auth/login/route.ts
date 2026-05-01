@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSessionToken } from "@/lib/auth";
-import { getSessionSecretKey, sessionCookieOptions } from "@/lib/auth-secret";
+import { sessionCookieOptions } from "@/lib/auth-secret";
+import { sessionSecretMisconfigurationMessage } from "@/lib/session-secret-check";
 import { SESSION_COOKIE } from "@/lib/constants";
 import { findUserByEmail, updateUserFields } from "@/lib/users";
 import { verifyStoredPassword } from "@/lib/password";
@@ -8,13 +9,9 @@ import { verifyStoredPassword } from "@/lib/password";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  try {
-    getSessionSecretKey();
-  } catch {
-    return NextResponse.json(
-      { error: "Server misconfiguration: SESSION_SECRET is not set" },
-      { status: 500 },
-    );
+  const secretErr = sessionSecretMisconfigurationMessage();
+  if (secretErr) {
+    return NextResponse.json({ error: `Server misconfiguration: ${secretErr}` }, { status: 500 });
   }
 
   try {

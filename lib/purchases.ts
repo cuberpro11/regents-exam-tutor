@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import fs from "fs/promises";
 import path from "path";
 import { getStore } from "@netlify/blobs";
+import { useNetlifyBlobs } from "@/lib/use-netlify-blobs";
 
 export type Purchase = {
   id: string;
@@ -13,10 +14,6 @@ export type Purchase = {
 type FileShape = Record<string, Purchase[]>;
 
 const STORE_NAME = "regents-purchases";
-
-function useNetlifyBlobs(): boolean {
-  return process.env.NETLIFY === "true";
-}
 
 async function readFileStore(): Promise<FileShape> {
   const fp = path.join(process.cwd(), "data", "purchases.local.json");
