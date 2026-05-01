@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Avoid picking a parent dir that has another lockfile (e.g. ~/package-lock.json).
+  turbopack: {
+    root: process.cwd(),
+  },
   async redirects() {
     return [
       { source: "/courses.html", destination: "/courses", permanent: true },
