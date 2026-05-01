@@ -1,13 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,8 +24,14 @@ export function LoginForm() {
       setError(data.error ?? "Login failed");
       return;
     }
-    router.push(next);
-    router.refresh();
+    const rawNext = searchParams.get("next");
+    const dest =
+      typeof rawNext === "string" &&
+      rawNext.startsWith("/") &&
+      !rawNext.startsWith("//")
+        ? rawNext
+        : "/dashboard";
+    window.location.assign(dest);
   }
 
   return (

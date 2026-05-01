@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     "Self-paced Regents prep with step-by-step video explanations for recent exams.",
 };
 
+/** Cookies/session require fresh layout; avoid cached shell showing wrong nav auth state. */
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({
   children,
 }: Readonly<{

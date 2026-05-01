@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 
@@ -8,8 +9,38 @@ type Props = {
   loggedIn: boolean;
 };
 
-export function Navbar({ loggedIn }: Props) {
+export function Navbar({ loggedIn: initialLoggedIn }: Props) {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(initialLoggedIn);
+
+  useEffect(() => {
+    setLoggedIn(initialLoggedIn);
+  }, [initialLoggedIn]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/auth/session", {
+      credentials: "include",
+      cache: "no-store",
+    })
+      .then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.json() as Promise<{ loggedIn?: boolean }>;
+      })
+      .then((d) => {
+        if (!cancelled && typeof d.loggedIn === "boolean") {
+          setLoggedIn(d.loggedIn);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLoggedIn(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname, initialLoggedIn]);
 
   useEffect(() => {
     if (menuOpen) {
