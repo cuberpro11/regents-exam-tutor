@@ -27,11 +27,17 @@ export function CheckoutButton({ courseName, className, children }: Props) {
         data = { error: `Server error (${res.status}). Check the terminal running Next.js.` };
       }
       if (!res.ok || !data.url) {
-        const msg =
-          data.error ??
-          (res.status === 401
-            ? "You must be logged in to purchase. Open Login and try again."
-            : "Checkout failed");
+        if (res.status === 401) {
+          const returnTo =
+            typeof window !== "undefined"
+              ? `${window.location.pathname}${window.location.search}`
+              : "/";
+          window.location.assign(
+            `/login?next=${encodeURIComponent(returnTo)}`,
+          );
+          return;
+        }
+        const msg = data.error ?? "Checkout failed";
         alert(msg);
         setBusy(false);
         return;

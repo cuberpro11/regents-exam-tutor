@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import { SITE_VIDEOS } from "@/lib/site-videos";
 
 /**
- * Hero: play with sound first, then on end mute + loop (matches legacy index.html behavior).
+ * Hero: muted autoplay (allowed by browsers), unmute on first tap/click.
+ * Unmuted autoplay without gesture is blocked and spams the console.
  */
 export function HeroCommercialVideo() {
   const ref = useRef<HTMLVideoElement>(null);
@@ -44,24 +45,14 @@ export function HeroCommercialVideo() {
     };
   }, [heroUrl]);
 
-  const attemptPlayWithSound = useCallback(() => {
-    const video = ref.current;
-    if (!video) return;
-    video.muted = false;
-    video.volume = 1;
-    video.play().catch(() => {
-      video.muted = true;
-      video.play().catch(() => {});
-    });
-  }, []);
-
   useEffect(() => {
     if (!ready) return;
     const video = ref.current;
     if (!video) return;
 
-    video.muted = false;
+    video.muted = true;
     video.volume = 1;
+    video.play().catch(() => {});
 
     const onEnded = () => {
       video.muted = true;
@@ -69,32 +60,31 @@ export function HeroCommercialVideo() {
       video.play().catch(() => {});
     };
 
-    video.addEventListener("ended", onEnded);
-    const once = () => attemptPlayWithSound();
-    video.addEventListener("canplay", once, { once: true });
-    video.addEventListener("loadeddata", once, { once: true });
-    video.addEventListener("loadedmetadata", once, { once: true });
-    attemptPlayWithSound();
-
-    const enableSoundOnInteraction = () => {
+    const enableSound = () => {
       video.muted = false;
       video.volume = 1;
       video.play().catch(() => {});
     };
-    if (video.paused) {
-      document.addEventListener("click", enableSoundOnInteraction, { once: true });
-      document.addEventListener("touchstart", enableSoundOnInteraction, { once: true });
-      document.addEventListener("scroll", enableSoundOnInteraction, { once: true });
-    }
 
-    return () => video.removeEventListener("ended", onEnded);
-  }, [ready, attemptPlayWithSound]);
+    video.addEventListener("ended", onEnded);
+
+    const ac = new AbortController();
+    const opts = { once: true, signal: ac.signal, passive: true } as const;
+    document.addEventListener("click", enableSound, opts);
+    document.addEventListener("touchstart", enableSound, opts);
+
+    return () => {
+      ac.abort();
+      video.removeEventListener("ended", onEnded);
+    };
+  }, [ready]);
 
   return (
     <video
       ref={ref}
       className="hero-video-el"
       autoPlay
+      muted
       playsInline
       preload="auto"
     />
