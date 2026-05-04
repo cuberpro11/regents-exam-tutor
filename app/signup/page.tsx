@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { SignupForm } from "@/components/SignupForm";
 import { getSession } from "@/lib/auth";
 
@@ -10,7 +11,9 @@ export default async function SignupPage() {
 
   return (
     <main className="auth-page-main">
-      <SignupForm />
+      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading…</p>}>
+        <SignupForm />
+      </Suspense>
     </main>
   );
 }

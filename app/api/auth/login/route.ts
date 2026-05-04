@@ -23,7 +23,14 @@ export async function POST(request: Request) {
     }
     const user = await findUserByEmail(email);
     if (!user) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+      return NextResponse.json(
+        {
+          error:
+            "There is no account for this email yet. Create one on the sign-up page, then sign in here.",
+          code: "EMAIL_NOT_REGISTERED" as const,
+        },
+        { status: 401 },
+      );
     }
     const check = await verifyStoredPassword(user.password, password);
     if (!check.valid) {

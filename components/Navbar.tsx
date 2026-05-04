@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
 
@@ -11,6 +11,7 @@ type Props = {
 
 export function Navbar({ loggedIn: initialLoggedIn }: Props) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [menuOpen, setMenuOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(initialLoggedIn);
 
@@ -63,6 +64,13 @@ export function Navbar({ loggedIn: initialLoggedIn }: Props) {
 
   const homeHref = loggedIn ? "/dashboard" : "/";
 
+  const loginHref =
+    pathname && pathname !== "/login" && pathname !== "/signup"
+      ? `/login?next=${encodeURIComponent(
+          `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+        )}`
+      : "/login";
+
   return (
     <nav className="sticky-nav">
       <button
@@ -106,7 +114,7 @@ export function Navbar({ loggedIn: initialLoggedIn }: Props) {
             </>
           ) : (
             <Link
-              href="/login"
+              href={loginHref}
               className="btn btn-secondary"
               onClick={() => setMenuOpen(false)}
             >

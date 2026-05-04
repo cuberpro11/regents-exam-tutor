@@ -2,13 +2,22 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function LoginForm() {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const q = searchParams.get("email");
+    if (typeof q === "string" && q.trim()) {
+      setEmail(q.trim());
+    }
+  }, [searchParams]);
+
+  const justRegistered = searchParams.get("registered") === "1";
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -19,8 +28,17 @@ export function LoginForm() {
       credentials: "include",
       body: JSON.stringify({ email, password }),
     });
+    const data = (await res.json()) as {
+      error?: string;
+      code?: string;
+    };
     if (!res.ok) {
-      const data = (await res.json()) as { error?: string };
+      if (data.code === "EMAIL_NOT_REGISTERED" && email.trim()) {
+        window.location.assign(
+          `/signup?email=${encodeURIComponent(email.trim().toLowerCase())}`,
+        );
+        return;
+      }
       setError(data.error ?? "Login failed");
       return;
     }
@@ -34,9 +52,19 @@ export function LoginForm() {
     window.location.assign(dest);
   }
 
+  const signupHref =
+    email.trim().length > 0
+      ? `/signup?email=${encodeURIComponent(email.trim().toLowerCase())}`
+      : "/signup";
+
   return (
     <form onSubmit={onSubmit} className="auth-form-card">
       <h1>Login</h1>
+      {justRegistered ? (
+        <p className="auth-form-hint" role="status">
+          Account created. Sign in with the password you chose.
+        </p>
+      ) : null}
       {error ? <p className="auth-form-error">{error}</p> : null}
       <label className="auth-form-field">
         <span>Email</span>
@@ -64,7 +92,7 @@ export function LoginForm() {
         Sign in
       </button>
       <p className="auth-form-footer">
-        <Link href="/signup">Create an account</Link>
+        <Link href={signupHref}>Create an account</Link>
       </p>
     </form>
   );

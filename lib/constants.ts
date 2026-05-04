@@ -17,10 +17,13 @@ export function getStripePriceId(courseName: string): string | null {
   return null;
 }
 
+/** Canonical public origin for redirects and Stripe return URLs. Netlify sets `URL`; previews use `DEPLOY_PRIME_URL`. */
 export function siteUrl(): string {
-  return (
-    process.env.URL ||
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    "http://localhost:3000"
-  ).replace(/\/$/, "");
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    process.env.URL?.trim() ||
+    process.env.DEPLOY_PRIME_URL?.trim() ||
+    process.env.DEPLOY_URL?.trim() ||
+    "http://localhost:3000";
+  return raw.replace(/\/$/, "");
 }

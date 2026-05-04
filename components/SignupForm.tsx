@@ -1,13 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function SignupForm() {
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const q = searchParams.get("email");
+    if (typeof q === "string" && q.trim()) {
+      setEmail(q.trim());
+    }
+  }, [searchParams]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -23,7 +32,10 @@ export function SignupForm() {
       setError(data.error ?? "Signup failed");
       return;
     }
-    window.location.assign("/dashboard");
+    const em = email.trim().toLowerCase();
+    window.location.assign(
+      `/login?registered=1&email=${encodeURIComponent(em)}`,
+    );
   }
 
   return (
@@ -67,7 +79,7 @@ export function SignupForm() {
         Create account
       </button>
       <p className="auth-form-footer">
-        <Link href="/login">Already have an account?</Link>
+        <Link href="/login">Already have an account? Sign in</Link>
       </p>
     </form>
   );

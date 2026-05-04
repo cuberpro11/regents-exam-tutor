@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSessionToken } from "@/lib/auth";
-import { sessionCookieOptions } from "@/lib/auth-secret";
 import { sessionSecretMisconfigurationMessage } from "@/lib/session-secret-check";
-import { SESSION_COOKIE } from "@/lib/constants";
 import { appendUser, findUserByEmail, newUserId } from "@/lib/users";
 import { hashPassword } from "@/lib/password";
 
@@ -42,10 +39,7 @@ export async function POST(request: Request) {
     const id = newUserId();
     const hash = await hashPassword(password);
     await appendUser({ id, email, password: hash });
-    const token = await createSessionToken({ id, email });
-    const res = NextResponse.json({ ok: true });
-    res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions);
-    return res;
+    return NextResponse.json({ ok: true });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     console.error("[signup]", e);
