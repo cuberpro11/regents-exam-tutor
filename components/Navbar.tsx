@@ -97,13 +97,13 @@ export function Navbar({ loggedIn: initialLoggedIn }: Props) {
           <DarkModeToggle />
           {loggedIn ? (
             <>
-              <Link
+              <a
                 href="/api/auth/logout"
                 className="btn btn-secondary"
                 onClick={() => setMenuOpen(false)}
               >
                 Logout
-              </Link>
+              </a>
               <Link
                 href="/dashboard"
                 className="btn btn-secondary"
