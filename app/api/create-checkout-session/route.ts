@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSession } from "@/lib/auth";
 import { getStripePriceId, siteUrl } from "@/lib/constants";
+import { getPurchases } from "@/lib/purchases";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,17 @@ export async function POST(request: Request) {
   const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = (await request.json()) as { course_name?: string };
+  const courseName = body.course_name;
+  if (!courseName) {
+    return NextResponse.json({ error: "course_name required" }, { status: 400 });
+  }
+
+  const purchases = await getPurchases(session.id);
+  if (purchases.some((p) => p.course_name === courseName)) {
+    return NextResponse.json({ already_owned: true });
   }
 
   const secret = process.env.STRIPE_SECRET_KEY;
@@ -20,12 +32,6 @@ export async function POST(request: Request) {
       },
       { status: 500 },
     );
-  }
-
-  const body = (await request.json()) as { course_name?: string };
-  const courseName = body.course_name;
-  if (!courseName) {
-    return NextResponse.json({ error: "course_name required" }, { status: 400 });
   }
 
   const priceId = getStripePriceId(courseName);

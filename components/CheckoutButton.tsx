@@ -20,23 +20,26 @@ export function CheckoutButton({ courseName, className, children }: Props) {
         credentials: "include",
         body: JSON.stringify({ course_name: courseName }),
       });
-      let data: { url?: string; error?: string };
+      let data: { url?: string; error?: string; already_owned?: boolean };
       try {
-        data = (await res.json()) as { url?: string; error?: string };
+        data = (await res.json()) as {
+          url?: string;
+          error?: string;
+          already_owned?: boolean;
+        };
       } catch {
         data = { error: `Server error (${res.status}). Check the terminal running Next.js.` };
       }
+      if (res.status === 401) {
+        const resume = `/purchase/checkout?course=${encodeURIComponent(courseName)}`;
+        window.location.assign(`/login?next=${encodeURIComponent(resume)}`);
+        return;
+      }
+      if (res.ok && data.already_owned) {
+        window.location.assign("/dashboard");
+        return;
+      }
       if (!res.ok || !data.url) {
-        if (res.status === 401) {
-          const returnTo =
-            typeof window !== "undefined"
-              ? `${window.location.pathname}${window.location.search}`
-              : "/";
-          window.location.assign(
-            `/login?next=${encodeURIComponent(returnTo)}`,
-          );
-          return;
-        }
         const msg = data.error ?? "Checkout failed";
         alert(msg);
         setBusy(false);

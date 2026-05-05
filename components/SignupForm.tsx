@@ -18,6 +18,19 @@ export function SignupForm() {
     }
   }, [searchParams]);
 
+  const rawNextLogin = searchParams.get("next");
+  const loginContinueParams = new URLSearchParams();
+  if (
+    typeof rawNextLogin === "string" &&
+    rawNextLogin.startsWith("/") &&
+    !rawNextLogin.startsWith("//")
+  ) {
+    loginContinueParams.set("next", rawNextLogin);
+  }
+  const loginHref = loginContinueParams.toString()
+    ? `/login?${loginContinueParams}`
+    : "/login";
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -33,9 +46,18 @@ export function SignupForm() {
       return;
     }
     const em = email.trim().toLowerCase();
-    window.location.assign(
-      `/login?registered=1&email=${encodeURIComponent(em)}`,
-    );
+    const loginQ = new URLSearchParams();
+    loginQ.set("registered", "1");
+    loginQ.set("email", em);
+    const rawNext = searchParams.get("next");
+    if (
+      typeof rawNext === "string" &&
+      rawNext.startsWith("/") &&
+      !rawNext.startsWith("//")
+    ) {
+      loginQ.set("next", rawNext);
+    }
+    window.location.assign(`/login?${loginQ}`);
   }
 
   return (
@@ -79,7 +101,7 @@ export function SignupForm() {
         Create account
       </button>
       <p className="auth-form-footer">
-        <Link href="/login">Already have an account? Sign in</Link>
+        <Link href={loginHref}>Already have an account? Sign in</Link>
       </p>
     </form>
   );

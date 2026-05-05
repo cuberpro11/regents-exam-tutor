@@ -34,9 +34,17 @@ export function LoginForm() {
     };
     if (!res.ok) {
       if (data.code === "EMAIL_NOT_REGISTERED" && email.trim()) {
-        window.location.assign(
-          `/signup?email=${encodeURIComponent(email.trim().toLowerCase())}`,
-        );
+        const nextQ = new URLSearchParams();
+        nextQ.set("email", email.trim().toLowerCase());
+        const rawNext = searchParams.get("next");
+        if (
+          typeof rawNext === "string" &&
+          rawNext.startsWith("/") &&
+          !rawNext.startsWith("//")
+        ) {
+          nextQ.set("next", rawNext);
+        }
+        window.location.assign(`/signup?${nextQ}`);
         return;
       }
       setError(data.error ?? "Login failed");
@@ -52,10 +60,21 @@ export function LoginForm() {
     window.location.assign(dest);
   }
 
-  const signupHref =
-    email.trim().length > 0
-      ? `/signup?email=${encodeURIComponent(email.trim().toLowerCase())}`
-      : "/signup";
+  const rawNextForSignup = searchParams.get("next");
+  const signupParams = new URLSearchParams();
+  if (email.trim().length > 0) {
+    signupParams.set("email", email.trim().toLowerCase());
+  }
+  if (
+    typeof rawNextForSignup === "string" &&
+    rawNextForSignup.startsWith("/") &&
+    !rawNextForSignup.startsWith("//")
+  ) {
+    signupParams.set("next", rawNextForSignup);
+  }
+  const signupHref = signupParams.toString()
+    ? `/signup?${signupParams}`
+    : "/signup";
 
   return (
     <form onSubmit={onSubmit} className="auth-form-card">
