@@ -260,7 +260,7 @@ export function CourseStepBody({ slug, courseId, purchase }: Props) {
       return shell(
         <>
           <p className="course-name">{cn}</p>
-          <h1 className="step-title">Step 7: Practice by Problem Category</h1>
+          <h1 className="step-title">Step 7: Redo Missed Questions by Problem Category</h1>
           <div className="step-video-frame">
             <div className="step-video-inner">
               <CourseSignedHlsPlayer
@@ -276,10 +276,11 @@ export function CourseStepBody({ slug, courseId, purchase }: Props) {
             <h2>Instructions:</h2>
             <p>
               Now that you&apos;ve worked through Practice Tests 1 and 2,
-              it&apos;s time to take a deeper dive into the specific types of
-              problems where you&apos;re struggling. This step is about
-              identifying patterns in your mistakes and mastering entire
-              categories of questions.
+              focus this step on the problem types where you keep missing
+              questions. When several wrong answers share the same idea—whether
+              it&apos;s triangles, circles, coordinate geometry, or something
+              else—go back and redo every missed question that fits that same
+              problem type or category before you move on.
             </p>
             <div className="category-examples">
               <h3>Examples of Problem Categories:</h3>
@@ -303,39 +304,36 @@ export function CourseStepBody({ slug, courseId, purchase }: Props) {
             </p>
             <ul className="step-instruction-list">
               <li>
-                <strong>Identify Problem Categories:</strong> Look back at your
-                missed questions from Practice Tests 1 and 2. Group them by the
-                type of problem they represent (e.g., &quot;triangle
-                questions,&quot; &quot;quadratic equations,&quot; &quot;coordinate
-                geometry&quot;).
+                <strong>Spot where you&apos;re slipping:</strong> Look back at
+                Practice Tests 1 and 2 and notice which kinds of problems show
+                up most often among your misses (use the example categories above
+                as a guide).
               </li>
               <li>
-                <strong>Find Your Weak Categories:</strong> Identify which
-                categories appear most frequently in your list of missed
-                questions. These are your areas that need the most practice.
+                <strong>Redo missed questions by category:</strong> Pick one weak
+                area at a time and work through all of your missed questions from
+                both tests that belong to that same problem type—fresh paper,
+                without peeking at the answers first.
               </li>
               <li>
-                <strong>Watch All Videos in That Category:</strong> Once
-                you&apos;ve identified your problem categories, watch all the
-                video explanations for questions in those categories, not just
-                the ones you missed. This will help you understand the full range
-                of problems within that category.
+                <strong>Use the videos when you need them:</strong> If you get
+                stuck, watch the explanations for those questions (and similar
+                ones you skipped or guessed on) before you try again.
               </li>
               <li>
-                <strong>Practice and Learn:</strong> Work through practice
-                problems in your weak categories. The goal is to build confidence
-                and mastery in these specific areas.
+                <strong>Jot down what repeats:</strong> As you review, note the
+                patterns, strategies, and formulas that keep appearing in that
+                category so you recognize them faster next time.
               </li>
               <li>
-                <strong>Take Notes:</strong> As you watch the videos, take notes
-                on common patterns, strategies, and formulas used for each
-                category.
+                <strong>Repeat:</strong> When that category feels solid, move on
+                to the next problem type that&apos;s still costing you points.
               </li>
             </ul>
             <p className="step-instructions-closing">
-              By focusing on problem categories rather than individual questions,
-              you&apos;ll develop a deeper understanding of the underlying concepts
-              and be better prepared for similar problems on the actual exam.
+              Working missed questions by category builds familiarity with how
+              those setups look on the exam—so similar problems feel manageable,
+              not surprising.
             </p>
           </div>
           <div className="step-next-footer">

@@ -119,7 +119,7 @@ function nextHrefAndLabel(
   }
   return {
     href: `/course/${courseId}/step_7_practice_categories`,
-    label: "Next Step: Practice by Problem Category",
+    label: "Next Step: Redo Missed Questions by Problem Category",
   };
 }
 

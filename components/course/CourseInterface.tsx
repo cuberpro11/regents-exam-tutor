@@ -129,13 +129,14 @@ export function CourseInterface({ courseId, purchase }: Props) {
                       href={s("step_7_practice_categories")}
                       className="timeline-content"
                     >
-                      <strong>Step 7:</strong> Practice by Problem Category.
+                      <strong>Step 7:</strong> Redo missed questions by problem
+                      category.
                     </Link>
                   ) : (
                     lockedBox(
                       <>
-                        <strong>Step 7:</strong> Practice by Problem Category.
-                        (Locked)
+                        <strong>Step 7:</strong> Redo missed questions by problem
+                        category. (Locked)
                       </>,
                     )
                   )}

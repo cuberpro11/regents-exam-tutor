@@ -129,9 +129,6 @@ export function Navbar({ loggedIn: initialLoggedIn }: Props) {
           <Link href="/courses" className="nav-link" onClick={() => setMenuOpen(false)}>
             Courses
           </Link>
-          <Link href="/blogs" className="nav-link" onClick={() => setMenuOpen(false)}>
-            Blogs
-          </Link>
           <Link href="/about" className="nav-link" onClick={() => setMenuOpen(false)}>
             About Us
           </Link>

@@ -22,13 +22,15 @@ main {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 1000;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-container {
     display: flex;
     justify-content: flex-start; /* Changed from space-between */
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.75rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
     gap: 2rem; /* Increased gap for spacing between main groups */
@@ -40,12 +42,14 @@ main {
     font-weight: bold;
     color: #333;
     text-decoration: none;
+    line-height: 1.15;
 }
 
 .nav-link {
     color: #333;
     text-decoration: none;
     font-size: 1rem;
+    line-height: 1.2;
 }
 
 .hero-section {
@@ -656,6 +660,15 @@ body.dark-mode .testimonial-name {
     margin-left: auto; /* Pushes this group to the right */
 }
 
+/* Menu backdrop: never participates in layout unless mobile + open (was missing on desktop). */
+.nav-overlay {
+    display: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
 /* Hamburger Menu Button */
 .hamburger-menu {
     display: none;
@@ -749,12 +762,11 @@ body.dark-mode .hamburger-menu span {
     }
 
     .nav-container {
-        padding: 1rem;
+        padding: 0.75rem 1rem;
     }
 
     /* Overlay when menu is open */
     .nav-overlay {
-        display: none;
         position: fixed;
         top: 0;
         left: 0;
@@ -762,6 +774,7 @@ body.dark-mode .hamburger-menu span {
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 999;
+        cursor: pointer;
     }
 
     .nav-overlay.active {
