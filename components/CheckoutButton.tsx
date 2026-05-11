@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { formatCoursePriceUsd } from "@/lib/constants";
 
 type Props = {
   courseName: string;
@@ -14,6 +15,24 @@ export function CheckoutButton({ courseName, className, children }: Props) {
   const onClick = useCallback(async () => {
     setBusy(true);
     try {
+      let loggedIn = false;
+      try {
+        const sessionRes = await fetch("/api/auth/session", {
+          credentials: "include",
+        });
+        const sessionData = (await sessionRes.json()) as {
+          loggedIn?: boolean;
+        };
+        loggedIn = !!sessionData.loggedIn;
+      } catch {
+        loggedIn = false;
+      }
+      if (!loggedIn) {
+        const resume = `/purchase/checkout?course=${encodeURIComponent(courseName)}`;
+        window.location.assign(`/login?next=${encodeURIComponent(resume)}`);
+        return;
+      }
+
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,7 +84,9 @@ export function CheckoutButton({ courseName, className, children }: Props) {
       disabled={busy}
       onClick={onClick}
     >
-      {children ?? (busy ? "Please wait…" : "Purchase")}
+      {busy
+        ? "Opening secure checkout…"
+        : (children ?? `Buy now — ${formatCoursePriceUsd()}`)}
     </button>
   );
 }

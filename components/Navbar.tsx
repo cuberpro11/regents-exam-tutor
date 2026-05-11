@@ -3,11 +3,31 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { DarkModeToggle } from "@/components/DarkModeToggle";
 
 type Props = {
   loggedIn: boolean;
 };
+
+function mainNavActive(
+  pathname: string | null,
+  href: string,
+  homeHref: string,
+): boolean {
+  if (!pathname) return false;
+  if (href === homeHref) {
+    return pathname === homeHref || (homeHref === "/" && pathname === "/");
+  }
+  if (href === "/courses") {
+    return pathname === "/courses" || pathname.startsWith("/courses/");
+  }
+  if (href === "/about") {
+    return pathname === "/about" || pathname.startsWith("/about/");
+  }
+  if (href === "/faq") {
+    return pathname === "/faq" || pathname.startsWith("/faq/");
+  }
+  return false;
+}
 
 export function Navbar({ loggedIn: initialLoggedIn }: Props) {
   const pathname = usePathname();
@@ -71,16 +91,63 @@ export function Navbar({ loggedIn: initialLoggedIn }: Props) {
         )}`
       : "/login";
 
+  const closeMenu = () => setMenuOpen(false);
+
+  const navMain = (
+    <>
+      <Link
+        href={homeHref}
+        className={`nav-link${mainNavActive(pathname, homeHref, homeHref) ? " nav-link--active" : ""}`}
+        aria-current={
+          mainNavActive(pathname, homeHref, homeHref) ? "page" : undefined
+        }
+        onClick={closeMenu}
+      >
+        Home
+      </Link>
+      <Link
+        href="/courses"
+        className={`nav-link${mainNavActive(pathname, "/courses", homeHref) ? " nav-link--active" : ""}`}
+        aria-current={
+          mainNavActive(pathname, "/courses", homeHref) ? "page" : undefined
+        }
+        onClick={closeMenu}
+      >
+        Courses
+      </Link>
+      <Link
+        href="/about"
+        className={`nav-link${mainNavActive(pathname, "/about", homeHref) ? " nav-link--active" : ""}`}
+        aria-current={
+          mainNavActive(pathname, "/about", homeHref) ? "page" : undefined
+        }
+        onClick={closeMenu}
+      >
+        About Us
+      </Link>
+      <Link
+        href="/faq"
+        className={`nav-link${mainNavActive(pathname, "/faq", homeHref) ? " nav-link--active" : ""}`}
+        aria-current={
+          mainNavActive(pathname, "/faq", homeHref) ? "page" : undefined
+        }
+        onClick={closeMenu}
+      >
+        FAQ
+      </Link>
+    </>
+  );
+
   return (
     <nav className="sticky-nav">
       <button
         type="button"
         className={`nav-overlay${menuOpen ? " active" : ""}`}
         aria-label="Close menu"
-        onClick={() => setMenuOpen(false)}
+        onClick={closeMenu}
       />
       <div className="nav-container">
-        <Link href="/" className="nav-brand">
+        <Link href="/" className="nav-brand" onClick={closeMenu}>
           Regents Prep
         </Link>
         <button
@@ -94,47 +161,35 @@ export function Navbar({ loggedIn: initialLoggedIn }: Props) {
           <span />
         </button>
         <div className={`nav-buttons-group${menuOpen ? " active" : ""}`}>
-          <DarkModeToggle />
           {loggedIn ? (
             <>
-              <a
-                href="/api/auth/logout"
-                className="btn btn-secondary"
-                onClick={() => setMenuOpen(false)}
-              >
-                Logout
-              </a>
               <Link
                 href="/dashboard"
-                className="btn btn-secondary"
-                onClick={() => setMenuOpen(false)}
+                className="nav-auth-btn nav-auth-btn--primary"
+                onClick={closeMenu}
               >
                 Dashboard
               </Link>
+              <a
+                href="/api/auth/logout"
+                className="nav-auth-btn nav-auth-btn--ghost"
+                onClick={closeMenu}
+              >
+                Logout
+              </a>
             </>
           ) : (
             <Link
               href={loginHref}
-              className="btn btn-secondary"
-              onClick={() => setMenuOpen(false)}
+              className="nav-auth-btn nav-auth-btn--primary"
+              onClick={closeMenu}
             >
               Login
             </Link>
           )}
         </div>
         <div className={`nav-links-group${menuOpen ? " active" : ""}`}>
-          <Link href={homeHref} className="nav-link" onClick={() => setMenuOpen(false)}>
-            Home
-          </Link>
-          <Link href="/courses" className="nav-link" onClick={() => setMenuOpen(false)}>
-            Courses
-          </Link>
-          <Link href="/about" className="nav-link" onClick={() => setMenuOpen(false)}>
-            About Us
-          </Link>
-          <Link href="/faq" className="nav-link" onClick={() => setMenuOpen(false)}>
-            FAQ
-          </Link>
+          {navMain}
         </div>
       </div>
     </nav>

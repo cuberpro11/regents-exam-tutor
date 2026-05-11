@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { COURSE_NAMES } from "@/lib/constants";
 
 const KNOWN_COURSES = new Set<string>(Object.values(COURSE_NAMES));
@@ -11,16 +11,21 @@ export function PurchaseCheckoutClient() {
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const courseName = useMemo(() => {
     const raw = searchParams.get("course");
-    const courseName =
-      typeof raw === "string" && raw.trim() ? raw.trim() : null;
-    if (!courseName || !KNOWN_COURSES.has(courseName)) {
-      setError("Invalid or missing course. Choose a course from the courses page.");
+    return typeof raw === "string" && raw.trim() ? raw.trim() : null;
+  }, [searchParams]);
+
+  const invalid = !courseName || !KNOWN_COURSES.has(courseName);
+
+  useEffect(() => {
+    if (invalid || !courseName) {
       return;
     }
 
     let cancelled = false;
+    setError(null);
+
     (async () => {
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
@@ -58,26 +63,46 @@ export function PurchaseCheckoutClient() {
     return () => {
       cancelled = true;
     };
-  }, [searchParams]);
+  }, [courseName, invalid]);
 
-  if (!error) {
+  if (invalid) {
     return (
-      <main className="container" style={{ padding: "60px 20px", textAlign: "center" }}>
-        <p>Redirecting to secure checkout…</p>
+      <main className="purchase-flow-page">
+        <div className="purchase-flow-card purchase-flow-card--narrow">
+          <h1 className="purchase-flow-title">Checkout</h1>
+          <p className="auth-form-error purchase-flow-error">
+            Invalid or missing course. Choose a course to continue.
+          </p>
+          <Link href="/courses" className="btn btn-primary course-purchase-cta">
+            View courses
+          </Link>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="container" style={{ padding: "60px 20px", textAlign: "center" }}>
-      <p className="auth-form-error" style={{ marginBottom: "1rem" }}>
-        {error}
-      </p>
-      <p>
-        <Link href="/courses" className="btn btn-primary">
-          View courses
-        </Link>
-      </p>
+    <main className="purchase-flow-page">
+      <div className="purchase-flow-card purchase-flow-card--narrow">
+        <p className="course-purchase-kicker">Checkout</p>
+        {error ? (
+          <>
+            <h1 className="purchase-flow-title">Couldn&apos;t start checkout</h1>
+            <p className="auth-form-error purchase-flow-error">{error}</p>
+            <Link href="/courses" className="btn btn-primary course-purchase-cta">
+              View courses
+            </Link>
+          </>
+        ) : (
+          <>
+            <h1 className="purchase-flow-title">Redirecting…</h1>
+            <p className="purchase-flow-body">
+              Taking you to secure payment. If nothing happens,{" "}
+              <Link href="/courses">return to courses</Link>.
+            </p>
+          </>
+        )}
+      </div>
     </main>
   );
 }

@@ -7,11 +7,11 @@ export const DASHBOARD_COURSE_COPY: Record<
   [COURSE_NAMES.algebra]: {
     route: "algebra1",
     description:
-      "A comprehensive review of Algebra 1 topics for the Regents exam.",
+      "Recent-exam video walkthroughs and step-by-step solutions for every question.",
   },
   [COURSE_NAMES.geometry]: {
     route: "geometry",
     description:
-      "Master the concepts of Geometry for the Regents exam.",
+      "Exam-based Geometry review with organized topic paths and full explanations.",
   },
 };

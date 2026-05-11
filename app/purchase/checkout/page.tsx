@@ -5,8 +5,11 @@ export default function PurchaseCheckoutPage() {
   return (
     <Suspense
       fallback={
-        <main className="container" style={{ padding: "60px 20px", textAlign: "center" }}>
-          <p>Loading…</p>
+        <main className="purchase-flow-page">
+          <div className="purchase-flow-card purchase-flow-card--narrow">
+            <p className="course-purchase-kicker">Checkout</p>
+            <h1 className="purchase-flow-title">Loading…</h1>
+          </div>
         </main>
       }
     >

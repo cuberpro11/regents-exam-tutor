@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSession } from "@/lib/auth";
-import { getStripePriceId, siteUrl } from "@/lib/constants";
+import {
+  courseMarketingPath,
+  getStripePriceId,
+  siteUrl,
+} from "@/lib/constants";
 import { getPurchases } from "@/lib/purchases";
 
 export const runtime = "nodejs";
@@ -52,6 +56,7 @@ export async function POST(request: Request) {
 
   const stripe = new Stripe(secret);
   const origin = siteUrl();
+  const cancelPath = courseMarketingPath(courseName);
 
   try {
     const checkoutSession = await stripe.checkout.sessions.create({
@@ -59,7 +64,7 @@ export async function POST(request: Request) {
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/purchase/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/courses`,
+      cancel_url: `${origin}${cancelPath}`,
       client_reference_id: session.id,
       metadata: {
         course_name: courseName,
