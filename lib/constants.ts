@@ -8,7 +8,7 @@ export const COURSE_NAMES = {
 export type CourseName = (typeof COURSE_NAMES)[keyof typeof COURSE_NAMES];
 
 /** Display price for marketing and checkout copy (must match Stripe price amount). */
-export const COURSE_PRICE_USD = 7 as const;
+export const COURSE_PRICE_USD = 9 as const;
 
 export function formatCoursePriceUsd(): string {
   return new Intl.NumberFormat("en-US", {
